@@ -1,7 +1,13 @@
-import requests
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
+from bs4 import BeautifulSoup
 import csv
 import json
-from bs4 import BeautifulSoup
+import time
+
+options = Options()
+options.add_argument("-headless")
 
 title_search = 'เกมรักในเงาลวง'
 url = f'https://wetv.vip/th/search/{title_search}'
@@ -9,11 +15,19 @@ main_url = 'https://wetv.vip'
 titles = []
 links = []
 
-r = requests.get(url)
-html_doc = r.text
+driver = webdriver.Firefox(options=options)
+driver.get(url)
+
+html_doc = driver.page_source
 soup = BeautifulSoup(html_doc, 'html.parser')
 names_soup = soup.select('.search-result__title>span:first-child')
 main_titles = [name.get_text() for name in names_soup]
+
+collapses = driver.find_elements(By.CSS_SELECTOR, "li.search-result__video--collapse")
+if len(collapses)>0:
+    for collapse in collapses:
+        driver.execute_script("arguments[0].click();", collapse)
+        time.sleep(3)
 
 uls = soup.select('ul.search-result__videos')
 
@@ -27,6 +41,8 @@ if len(uls)==len(main_titles):
             links.append(link)
 else:
     print('Cannot process')
+
+driver.quit()
 
 with open('links.csv', 'w', newline='') as csvfile:
     fieldnames = ['title', 'link']
