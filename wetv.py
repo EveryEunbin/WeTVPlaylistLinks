@@ -17,6 +17,7 @@ title_name = driver.title
 title_part, _ = title_name.split('-', 1)
 _, serie_name = title_part.split(' ', 1)
 serie_name = serie_name.strip()
+print(serie_name)
 
 tabs = driver.find_elements(By.CSS_SELECTOR, ".index-tab-item")
 ep = 0
@@ -35,7 +36,8 @@ for tab in tabs:
         ep = ep + 1
         title = f'EP{str(ep).zfill(2)} {serie_name}'
         titles.append(title)
-        links.append(link) 
+        links.append(link)
+									print(title,link)
     
 driver.quit()
 
