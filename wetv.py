@@ -37,7 +37,7 @@ for tab in tabs:
         title = f'EP{str(ep).zfill(2)} {serie_name}'
         titles.append(title)
         links.append(link)
-									print(f'{title},{link}')
+        print(f'{title},{link}')
     
 driver.quit()
 
