@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import parse_qs
 import csv
 import json
+import time
 
 options = Options()
 options.add_argument("--headless")
@@ -14,30 +15,35 @@ url = 'https://wetv.vip/th/play/f3riqx5fl3gmdmh/j4101wr8h9a'
 driver = webdriver.Firefox(options=options)
 driver.get(url)
 title_name = driver.title
+time.sleep(5)
+
 title_part, _ = title_name.split('-', 1)
 _, serie_name = title_part.split(' ', 1)
 serie_name = serie_name.strip()
-print(serie_name)
 
 tabs = driver.find_elements(By.CSS_SELECTOR, ".index-tab-item")
+time.sleep(2)
 ep = 0
 titles = []
 links = []
 
+print(f'{len(tabs)} tab(s)')
+
 for tab in tabs:
     driver.execute_script("arguments[0].click();", tab)
     html_doc = driver.page_source
+    time.sleep(2)
     soup = BeautifulSoup(html_doc, 'html.parser')
     all_li = soup.select('li.play-video__item')
     
     for li in all_li:
         query_dict = parse_qs(li['dt-params'])
-        link = f'https://wetv.vip/th/play/{query_dict["cid"][0]}/{query_dict["vid"][0]}'
+        link = f'https://wetv.vip/th/play/{query_dict['cid'][0]}/{query_dict['vid'][0]}'
         ep = ep + 1
         title = f'EP{str(ep).zfill(2)} {serie_name}'
         titles.append(title)
         links.append(link)
-        print(f'{title},{link}')
+        print(f'{title}, {link}')
     
 driver.quit()
 
