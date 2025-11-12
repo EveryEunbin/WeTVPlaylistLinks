@@ -9,7 +9,7 @@ import time
 options = Options()
 options.add_argument("-headless")
 
-title_search = 'ดาราจักรรักลำนำใจ (พากย์ไทย)'
+title_search = 'ดาราจักรรักลำนำใจ'
 url = f'https://wetv.vip/th/search/{title_search}'
 main_url = 'https://wetv.vip'
 titles = []
@@ -18,17 +18,17 @@ links = []
 driver = webdriver.Firefox(options=options)
 driver.get(url)
 
-html_doc = driver.page_source
-soup = BeautifulSoup(html_doc, 'html.parser')
-names_soup = soup.select('.search-result__title>span:first-child')
-main_titles = [name.get_text() for name in names_soup]
-
 collapses = driver.find_elements(By.CSS_SELECTOR, "li.search-result__video--collapse")
 if len(collapses)>0:
     print('Having Collapse(s)')
     for collapse in collapses:
         driver.execute_script("arguments[0].click();", collapse)
         time.sleep(3)
+
+html_doc = driver.page_source
+soup = BeautifulSoup(html_doc, 'html.parser')
+names_soup = soup.select('.search-result__title>span:first-child')
+main_titles = [name.get_text() for name in names_soup]
 
 uls = soup.select('ul.search-result__videos')
 
