@@ -20,6 +20,7 @@ time.sleep(5)
 title_part, _ = title_name.split('-', 1)
 _, serie_name = title_part.split(' ', 1)
 serie_name = serie_name.strip()
+print(serie_name)
 
 tabs = driver.find_elements(By.CSS_SELECTOR, ".index-tab-item")
 time.sleep(2)
