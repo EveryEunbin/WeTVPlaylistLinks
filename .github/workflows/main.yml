@@ -20,7 +20,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Run wetv.py
       run: |
-        python bili.py
+        python wetv.py
     - name: Commit file
       uses: EndBug/add-and-commit@v9
       with:
