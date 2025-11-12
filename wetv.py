@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 import csv
-import csv
 import json
 from bs4 import BeautifulSoup
 from urllib.parse import parse_qs
@@ -10,7 +9,7 @@ from urllib.parse import parse_qs
 options = Options()
 options.add_argument("--headless")
 
-url = 'https://wetv.vip/th/play/n6ihq5rynbdi1ae/b4101fq016y'
+url = 'https://wetv.vip/th/play/f3riqx5fl3gmdmh/j4101wr8h9a'
 
 driver = webdriver.Firefox(options=options)
 driver.get(url)
@@ -23,8 +22,6 @@ tabs = driver.find_elements(By.CSS_SELECTOR, ".index-tab-item")
 ep = 0
 titles = []
 links = []
-
-
 
 for tab in tabs:
     driver.execute_script("arguments[0].click();", tab)
