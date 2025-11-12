@@ -1,10 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
-import csv
-import json
 from bs4 import BeautifulSoup
 from urllib.parse import parse_qs
+import csv
+import json
 
 options = Options()
 options.add_argument("--headless")
@@ -15,7 +15,7 @@ driver = webdriver.Firefox(options=options)
 driver.get(url)
 title_name = driver.title
 title_part, _ = title_name.split('-', 1)
-_, serie_name = title_part.split(" ", 1)
+_, serie_name = title_part.split(' ', 1)
 serie_name = serie_name.strip()
 
 tabs = driver.find_elements(By.CSS_SELECTOR, ".index-tab-item")
@@ -31,11 +31,11 @@ for tab in tabs:
     
     for li in all_li:
         query_dict = parse_qs(li['dt-params'])
-        url = f'https://wetv.vip/th/play/{query_dict['cid'][0]}/{query_dict['vid'][0]}'
+        link = f'https://wetv.vip/th/play/{query_dict['cid'][0]}/{query_dict['vid'][0]}'
         ep = ep + 1
         title = f'EP{str(ep).zfill(2)} {serie_name}'
         titles.append(title)
-        links.append(url) 
+        links.append(link) 
     
 driver.quit()
 
