@@ -1,72 +1,32 @@
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
-from urllib.parse import parse_qs
+import requests
 import csv
 import json
-import time
+from bs4 import BeautifulSoup
 
-options = Options()
-options.add_argument("-headless")
-
-url = 'https://wetv.vip/th/play/f3riqx5fl3gmdmh/j4101wr8h9a'
-
-driver = webdriver.Firefox(options=options)
-# driver.set_window_size(375,812)
-driver.get(url)
-title_name = driver.title
-
-title_part, _ = title_name.split('-', 1)
-_, serie_name = title_part.split(' ', 1)
-serie_name = serie_name.strip()
-print(serie_name)
-
-ep = 0
+title_search = 'เกมรักในเงาลวง'
+url = f'https://wetv.vip/th/search/{title_search}'
+main_url = 'https://wetv.vip'
 titles = []
 links = []
 
-playlist_tab = driver.find_elements(By.CSS_SELECTOR, ".play-video__list__container")
+r = requests.get(url)
+html_doc = r.text
+soup = BeautifulSoup(html_doc, 'html.parser')
+names_soup = soup.select('.search-result__title>span:first-child')
+main_titles = [name.get_text() for name in names_soup]
 
-if len(playlist_tab)>0:
-    tabs = driver.find_elements(By.CSS_SELECTOR, ".index-tab-item")
-    print(f'{len(tabs)} tab(s)')
-    if len(tabs)==0:
-        html_doc = driver.page_source
-        soup = BeautifulSoup(html_doc, 'html.parser')
-        all_li = soup.select('li.play-video__item')
-            
-        for li in all_li:
-            query_dict = parse_qs(li['dt-params'])
-            link = f'https://wetv.vip/th/play/{query_dict["cid"][0]}/{query_dict["vid"][0]}'
-            ep = ep + 1
-            title = f'EP{str(ep).zfill(2)} {serie_name}'
+uls = soup.select('ul.search-result__videos')
+
+if len(uls)==len(main_titles):
+    for i, ul in enumerate(uls):
+        all_a = ul.select('a.search-result__link')
+        for a_tag in all_a:
+            title = f'EP{a_tag['title']} {main_titles[i]}'
+            link = f'{main_url}{a_tag['href']}'
             titles.append(title)
             links.append(link)
-            print(f'{title}, {link}')
-    
-    else:
-
-        for tab in tabs:
-            driver.execute_script("arguments[0].click();", tab)
-            html_doc = driver.page_source
-            time.sleep(2)
-            soup = BeautifulSoup(html_doc, 'html.parser')
-            all_li = soup.select('li.play-video__item')
-            
-            for li in all_li:
-                query_dict = parse_qs(li['dt-params'])
-                link = f'https://wetv.vip/th/play/{query_dict["cid"][0]}/{query_dict["vid"][0]}'
-                ep = ep + 1
-                title = f'EP{str(ep).zfill(2)} {serie_name}'
-                titles.append(title)
-                links.append(link)
-                print(f'{title}, {link}')
-
 else:
-    print('No playlist on page')
-    
-driver.quit()
+    print('Cannot process')
 
 with open('links.csv', 'w', newline='') as csvfile:
     fieldnames = ['title', 'link']
