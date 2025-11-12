@@ -8,7 +8,7 @@ import json
 import time
 
 options = Options()
-# options.add_argument("-headless")
+options.add_argument("-headless")
 
 url = 'https://wetv.vip/th/play/f3riqx5fl3gmdmh/j4101wr8h9a'
 
