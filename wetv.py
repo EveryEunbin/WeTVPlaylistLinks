@@ -23,7 +23,7 @@ serie_name = serie_name.strip()
 print(serie_name)
 
 tabs = driver.find_elements(By.CSS_SELECTOR, ".index-tab-item")
-time.sleep(2)
+time.sleep(5)
 ep = 0
 titles = []
 links = []
