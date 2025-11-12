@@ -9,7 +9,7 @@ import time
 options = Options()
 options.add_argument("-headless")
 
-title_search = 'เกมรักในเงาลวง'
+title_search = 'ดาราจักรรักลำนำใจ (พากย์ไทย)'
 url = f'https://wetv.vip/th/search/{title_search}'
 main_url = 'https://wetv.vip'
 titles = []
@@ -25,6 +25,7 @@ main_titles = [name.get_text() for name in names_soup]
 
 collapses = driver.find_elements(By.CSS_SELECTOR, "li.search-result__video--collapse")
 if len(collapses)>0:
+    print('Having Collapse(s)')
     for collapse in collapses:
         driver.execute_script("arguments[0].click();", collapse)
         time.sleep(3)
@@ -33,6 +34,7 @@ uls = soup.select('ul.search-result__videos')
 
 if len(uls)==len(main_titles):
     for i, ul in enumerate(uls):
+        print(main_titles[i])
         all_a = ul.select('a.search-result__link')
         for a_tag in all_a:
             title = f'EP{a_tag['title']} {main_titles[i]}'
