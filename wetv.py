@@ -31,7 +31,7 @@ for tab in tabs:
     
     for li in all_li:
         query_dict = parse_qs(li['dt-params'])
-        link = f'https://wetv.vip/th/play/{query_dict['cid'][0]}/{query_dict['vid'][0]}'
+        link = f'https://wetv.vip/th/play/{query_dict["cid"][0]}/{query_dict["vid"][0]}'
         ep = ep + 1
         title = f'EP{str(ep).zfill(2)} {serie_name}'
         titles.append(title)
