@@ -9,7 +9,7 @@ import time
 options = Options()
 options.add_argument("-headless")
 
-title_search = 'วสันต์ซ่อนใจ'
+title_search = 'ธารธารารักนิรันดร์'
 url = f'https://wetv.vip/th/search/{title_search}'
 main_url = 'https://wetv.vip'
 titles = []
